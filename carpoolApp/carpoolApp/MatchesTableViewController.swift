@@ -81,7 +81,7 @@ class MatchesTableViewController: UITableViewController, CLLocationManagerDelega
         }
     }
     
-    // MARK: - Distance
+    // MARK: - Filters
     
     // gets the locations that are close to the user
     func getMatches() {
@@ -115,7 +115,30 @@ class MatchesTableViewController: UITableViewController, CLLocationManagerDelega
                
                 for match in self.matchLocations {
                     if(potentialPerson.key == match.key) {
-                        if(potentialPerson.numPas >= self.loggedUser.numHijos) {
+                        if(potentialPerson.numPas >= self.loggedUser.numHijos || potentialPerson.numHijos <= self.loggedUser.numPas) {
+                            auxMatchLocations.append(match)
+                        }
+                    }
+                }
+            }
+            self.matchLocations = auxMatchLocations
+            self.timeFilter()
+        }
+    }
+
+    // filters potential matches by time
+    func timeFilter() {
+        var auxMatchLocations = [LocationObj]()
+        var potentialPerson: Persona!
+        
+        databaseRef = Database.database().reference().child("usuarios")
+        databaseRef.observe(DataEventType.value) { (snapshot) in
+            for snapshot in snapshot.children {
+                potentialPerson = Persona(snapshot: snapshot as! DataSnapshot)
+                
+                for match in self.matchLocations {
+                    if(potentialPerson.key == match.key) {
+                        if(potentialPerson.entrada == self.loggedUser.entrada && potentialPerson.salida == self.loggedUser.salida) {
                             auxMatchLocations.append(match)
                         }
                     }
@@ -125,7 +148,8 @@ class MatchesTableViewController: UITableViewController, CLLocationManagerDelega
             self.tableView.reloadData()
         }
     }
-
+    
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.

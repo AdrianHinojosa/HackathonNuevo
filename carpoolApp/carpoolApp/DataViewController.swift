@@ -70,7 +70,7 @@ class DataViewController: UIViewController, CLLocationManagerDelegate {
         
         if let user = Auth.auth().currentUser{
             let key = user.uid
-            let persona = ["name": nombre, "celular": celular, "numChildren": numHijos, "numPassengers": numPas, "entryHour": entrada, "outHour": salida, "coordinates": "false"]
+            let persona = ["name": nombre, "celular": celular, "numChildren": numHijos, "numPassengers": numPas, "entryHour": entrada, "outHour": salida]
             
             newNombre = nombre
             
@@ -114,9 +114,8 @@ class DataViewController: UIViewController, CLLocationManagerDelegate {
             let dateformatterS = DateFormatter()
             dateformatterS.dateFormat = "hh:mma"
             let stringDateS = dateformatter.string(from: dateS)
-            entrada = stringDateS
-            print(stringDateS)
             salida = stringDateS
+            print(stringDateS)
             return true
         }
         
