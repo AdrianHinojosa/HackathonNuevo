@@ -29,12 +29,10 @@ class DataViewController: UIViewController, CLLocationManagerDelegate {
     var entrada: String!
     var salida: String!
     var dbReference: DatabaseReference!
-    
-    // informacion que se va a pasar a MapVC
-    var newKey: String!
-    var newNombre: String!
 
     var locationManager = CLLocationManager()
+    
+    var newNombre: String!
     
     // esconde el teclado
   func scrollViewWillBeginDragging(scrollView: UIScrollView) {
@@ -65,15 +63,14 @@ class DataViewController: UIViewController, CLLocationManagerDelegate {
         
     }
     
-    
+    // uploads data to Firebase
     func updateDatabase (){
         dbReference = Database.database().reference().child("usuarios")
         
         if let user = Auth.auth().currentUser{
             let key = user.uid
-            let persona = ["name": nombre, "address": direccion, "numChildren": numHijos, "numPassengers": numPas, "entryHour": entrada, "outHour":salida, "coordinates": "false"]
+            let persona = ["name": nombre, "address": direccion, "numChildren": numHijos, "numPassengers": numPas, "entryHour": entrada, "outHour": salida, "coordinates": "false"]
             
-            newKey = key
             newNombre = nombre
             
             let childUpdates = ["/\(key)": persona]
@@ -81,7 +78,6 @@ class DataViewController: UIViewController, CLLocationManagerDelegate {
             
             print("upload to database complete")
         }
-        
         
     }
    
@@ -124,7 +120,6 @@ class DataViewController: UIViewController, CLLocationManagerDelegate {
         if(segue.identifier == "toMapVC") {
             let mapVC = segue.destination as! MapViewController
             mapVC.newNombre = newNombre
-            mapVC.newKey = newKey
         }
     }
  

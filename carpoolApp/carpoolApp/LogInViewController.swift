@@ -14,13 +14,11 @@ class LogInViewController: UIViewController {
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var passTextField: UITextField!
     
-    var newKey: String!
+    // nombre es pasado al siguiente segue para que se guarde el dato en LocationObj
     var newNombre: String!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // Do any additional setup after loading the view.
     }
     
     override func didReceiveMemoryWarning() {
@@ -37,8 +35,7 @@ class LogInViewController: UIViewController {
                         
             } else{
                 print ("Log in successful!")
-                self.newKey = Auth.auth().currentUser?.uid
-                self.performSegue(withIdentifier: "goToHome2", sender: self)
+                self.retrieveUserName()
             }
         }
     }
@@ -49,17 +46,30 @@ class LogInViewController: UIViewController {
     }
     
 
-    
+    func retrieveUserName() {
+        let databaseRef = Database.database().reference().child("usuarios")
+        let userID = Auth.auth().currentUser?.uid
+        print("Checking user...")
+        databaseRef.child(userID!).observeSingleEvent(of: .value, with: { (snapshot) in
+            
+            let currentUser = Persona(snapshot: snapshot)
+            self.newNombre = currentUser.nombre!
+            print("Nombre Login:", self.newNombre!)
+            self.performSegue(withIdentifier: "goToHome2", sender: self)
+            
+        }) { (error) in
+            print(error.localizedDescription)
+        }
+    }
 
     
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if(segue.identifier == "toMapVC") {
+        if(segue.identifier == "goToHome2") {
             let mapVC = segue.destination as! MapViewController
             mapVC.newNombre = newNombre
-            mapVC.newKey = newKey
         }
     }
  

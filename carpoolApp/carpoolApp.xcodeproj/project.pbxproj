@@ -60,6 +60,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		07B2D99121325DF700695ADC /* Objects */ = {
+			isa = PBXGroup;
+			children = (
+				8CD4C9CC21321755005BE9CE /* Persona.swift */,
+				8CD4C9D421322F2A005BE9CE /* LocationObj.swift */,
+			);
+			path = Objects;
+			sourceTree = "<group>";
+		};
 		7CAC4AFB54A28CE7F154D2A7 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -98,8 +107,7 @@
 				8CD4C9D221322EBC005BE9CE /* MapViewController.swift */,
 				8CD4C9D021322E61005BE9CE /* MatchesTableViewController.swift */,
 				8CD4C9D621322F91005BE9CE /* MatchInfoViewController.swift */,
-				8CD4C9CC21321755005BE9CE /* Persona.swift */,
-				8CD4C9D421322F2A005BE9CE /* LocationObj.swift */,
+				07B2D99121325DF700695ADC /* Objects */,
 				8C5817B82131B95500E36741 /* Main.storyboard */,
 				8C5817BB2131B95800E36741 /* Assets.xcassets */,
 				8C5817BD2131B95800E36741 /* LaunchScreen.storyboard */,

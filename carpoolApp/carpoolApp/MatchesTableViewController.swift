@@ -8,12 +8,12 @@
 
 import UIKit
 import CoreLocation
-import FirebaseDatabase
+import Firebase
 
 class MatchesTableViewController: UITableViewController, CLLocationManagerDelegate {
 
     // location and distance variables
-    let acceptedRadius: Double = 20047.722
+    var acceptedRadius = 0.0
     var locations = [LocationObj]()
     var matchLocations = [LocationObj]()
     var selectedLocation: LocationObj!
@@ -24,8 +24,8 @@ class MatchesTableViewController: UITableViewController, CLLocationManagerDelega
     // table view
     var selectedIndex = 0
     
-    // test variables
-    let testUserCoordinates = CLLocation(latitude: 25.649058688015778, longitude: -100.28982410127462)
+    // user variables
+    var userCoordinates: LocationObj!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,20 +37,42 @@ class MatchesTableViewController: UITableViewController, CLLocationManagerDelega
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
 
         // connects to database and retrieves data
-        getLocations()
+        getUserCoordinates()
         
     }
     
     // MARK: - Firebase
+    
+    func getUserCoordinates() {
+        databaseRef = Database.database().reference().child("locations")
+        let userID = Auth.auth().currentUser?.uid
+        print("Checking user location...")
+        databaseRef.child(userID!).observeSingleEvent(of: .value, with: { (snapshot) in
+            
+            self.userCoordinates = LocationObj(snapshot: snapshot)
+            print("Success user location")
+            self.getLocations()
+            
+        }) { (error) in
+            print(error.localizedDescription)
+        }
+    }
+    
+    // gets all the location in the database
     func getLocations() {
-        databaseRef = Database.database().reference().child("Locations")
+        print("Checking all locations...")
+        let userId = Auth.auth().currentUser?.uid
+        databaseRef = Database.database().reference().child("locations")
         databaseRef.observe(DataEventType.value) { (snapshot) in
             var newLocations = [LocationObj]()
         
             for snapshot in snapshot.children {
                 let newLocation = LocationObj(snapshot: snapshot as! DataSnapshot)
-                newLocations.append(newLocation)
+                if(newLocation.key != userId) {
+                    newLocations.append(newLocation)
+                }
             }
+            print("Got all locations")
             self.locations = newLocations
             
             // gets matches
@@ -62,12 +84,14 @@ class MatchesTableViewController: UITableViewController, CLLocationManagerDelega
     
     // gets the locations that are close to the user
     func getMatches() {
+        print("Checking matches...")
+        let auxCoordinates = CLLocation(latitude: userCoordinates.lat, longitude: userCoordinates.lon)
         var distanceInKiloMeters = 0.0
         var auxLocation: CLLocation!
         // for loop to loop through all radius...
         for location in locations {
             auxLocation = CLLocation(latitude: location.lat, longitude: location.lon)
-            distanceInKiloMeters = testUserCoordinates.distance(from: auxLocation) / 1000
+            distanceInKiloMeters = auxCoordinates.distance(from: auxLocation) / 1000
             distanceInKiloMeters = Double(distanceInKiloMeters).roundTo(places: 3)
             print("Distance: ", distanceInKiloMeters)
 
@@ -106,6 +130,7 @@ class MatchesTableViewController: UITableViewController, CLLocationManagerDelega
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         selectedIndex = indexPath.row
         selectedLocation = matchLocations[selectedIndex]
+        print(matchLocations[selectedIndex].key)
         performSegue(withIdentifier: "toMatchInfo", sender: self)
     }
 

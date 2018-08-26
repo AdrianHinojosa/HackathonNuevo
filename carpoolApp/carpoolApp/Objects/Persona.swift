@@ -17,7 +17,6 @@ struct Persona {
     let numPas: Int!
     let entrada: String!
     let salida: String!
-    let coordenadas: String!
     
     let itemRef : DatabaseReference
     
@@ -69,12 +68,6 @@ struct Persona {
             salida = ""
         }
         
-        if let coor = snapshotValue["coordinates"] as? String{
-            coordenadas = coor
-        }
-        else{
-            coordenadas = ""
-        }
         
     }
     

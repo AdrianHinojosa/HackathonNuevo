@@ -20,11 +20,11 @@ class MapViewController: UIViewController, CLLocationManagerDelegate {
     // location
     var latitude: CLLocationDegrees!
     var longitude: CLLocationDegrees!
+    var acceptedRadius = 0.0
     
     // firebase
     var dbReference: DatabaseReference!
-    var newNombre: String!
-    var newKey: String!
+    var newNombre = ""
     
     @IBAction func logOutBT(_ sender: Any) {
         do{
@@ -43,11 +43,10 @@ class MapViewController: UIViewController, CLLocationManagerDelegate {
         
     }
     
-    
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationItem.setHidesBackButton(true, animated:true);
+        print("Nombre Login:", newNombre )
         // Permiso para utilizar ubicacion
         locationManager.requestWhenInUseAuthorization()
         startMap()
@@ -77,7 +76,6 @@ class MapViewController: UIViewController, CLLocationManagerDelegate {
                 if let sourceCoor = locationManager.location?.coordinate {
                     let sourcePlacemark = MKPlacemark(coordinate: sourceCoor)
                     let sourceItem = MKMapItem(placemark: sourcePlacemark)
-                    print("User coordinates: ", sourceCoor)
                     
                     // view del mapa
                     latitude = (sourceCoor.latitude)
@@ -111,39 +109,37 @@ class MapViewController: UIViewController, CLLocationManagerDelegate {
     }
     
     // MARK: - RADIUS
-    func showCircle(coordinate: CLLocationCoordinate2D, radius: CLLocationDistance, mapView: MKMapView)
-    {
+    func showCircle(coordinate: CLLocationCoordinate2D, radius: CLLocationDistance, mapView: MKMapView) {
         let overlays = mapView.overlays
         mapView.removeOverlays(overlays)
         let circle = MKCircle(center: coordinate, radius: radius)
         mapView.addOverlays([circle])
-        
     }
     
     
     @IBOutlet weak var UnKmColor: UIButton!
     
-    
-    @IBAction func UnKm(_ sender: Any)
-    {
+    @IBAction func UnKm(_ sender: Any) {
         UnKmColor.backgroundColor = UIColor.blue
         TresKmColor.backgroundColor = nil
         CincoKmColor.backgroundColor = nil
         let coordinates = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
         
-        showCircle(coordinate: coordinates, radius: 750, mapView: mapView)
+        acceptedRadius = 1.0
         
+        showCircle(coordinate: coordinates, radius: 750, mapView: mapView)
     }
     
     
     @IBOutlet weak var TresKmColor: UIButton!
     
-    @IBAction func TresKm(_ sender: Any)
-    {
+    @IBAction func TresKm(_ sender: Any) {
         TresKmColor.backgroundColor = UIColor.blue
         UnKmColor.backgroundColor = nil
         CincoKmColor.backgroundColor = nil
         let coordinates = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+        
+        acceptedRadius = 3.0
         
         showCircle(coordinate: coordinates, radius: 2250, mapView: mapView)
     }
@@ -151,15 +147,15 @@ class MapViewController: UIViewController, CLLocationManagerDelegate {
     
     @IBOutlet weak var CincoKmColor: UIButton!
     
-    @IBAction func CincoKm(_ sender: Any)
-    {
+    @IBAction func CincoKm(_ sender: Any) {
         CincoKmColor.backgroundColor = UIColor.blue
         UnKmColor.backgroundColor = nil
         TresKmColor.backgroundColor = nil
         let coordinates = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
         
-        showCircle(coordinate: coordinates, radius: 3750, mapView: mapView)
+        acceptedRadius = 5.0
         
+        showCircle(coordinate: coordinates, radius: 3750, mapView: mapView)
     }
     
     // MARK: - Firebase
@@ -172,29 +168,25 @@ class MapViewController: UIViewController, CLLocationManagerDelegate {
         if let userId = Auth.auth().currentUser?.uid  {
             // sube el objeto con su informacion, hace una key automatica
             let key = userId
-            let location = ["latitude": String(self.latitude), "longitude": String(self.longitude), "description": "test"]
+            let location = ["latitude": String(self.latitude), "longitude": String(self.longitude), "description": "Direccion", "name": newNombre]
             let childUpdates = ["/\(key)": location]
             self.dbReference.updateChildValues(childUpdates)
         }
         
     }
-
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
     
 
-    /*
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+        if(segue.identifier == "goToMatches") {
+            let matchesTableVC = segue.destination as! MatchesTableViewController
+            matchesTableVC.acceptedRadius = acceptedRadius
+        }
     }
-    */
+ 
 
 }
 

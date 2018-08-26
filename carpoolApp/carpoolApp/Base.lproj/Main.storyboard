@@ -292,20 +292,32 @@
             </objects>
             <point key="canvasLocation" x="2669.5999999999999" y="133.5832083958021"/>
         </scene>
-        <!--View Controller-->
+        <!--Match Info View Controller-->
         <scene sceneID="SyI-8N-faQ">
             <objects>
-                <viewController id="2vt-Cs-AYR" sceneMemberID="viewController">
+                <viewController id="2vt-Cs-AYR" customClass="MatchInfoViewController" customModule="carpoolApp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="BdZ-h0-saR">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZS4-RF-U4u">
+                                <rect key="frame" x="166" y="297" width="42" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="aSj-rl-ewe"/>
                     </view>
+                    <connections>
+                        <outlet property="descriptionLabel" destination="ZS4-RF-U4u" id="EYc-oR-Nmj"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wr6-IH-Y2a" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4334" y="466"/>
+            <point key="canvasLocation" x="4333.6000000000004" y="465.51724137931041"/>
         </scene>
         <!--Settings-->
         <scene sceneID="l3E-hM-0YJ">
