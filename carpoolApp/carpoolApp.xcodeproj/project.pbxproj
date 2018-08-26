@@ -90,6 +90,7 @@
 		8C5817B32131B95500E36741 /* carpoolApp */ = {
 			isa = PBXGroup;
 			children = (
+				8CD4C9DA213266E3005BE9CE /* Resources */,
 				8C5817B42131B95500E36741 /* AppDelegate.swift */,
 				8C5817B62131B95500E36741 /* WelcomeViewController.swift */,
 				8C5817CC2131C31900E36741 /* LogInViewController.swift */,
@@ -107,6 +108,13 @@
 				8C5817D42131C84300E36741 /* GoogleService-Info.plist */,
 			);
 			path = carpoolApp;
+			sourceTree = "<group>";
+		};
+		8CD4C9DA213266E3005BE9CE /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 		D11C37CA18A7211E3B012DD6 /* Pods */ = {
