@@ -12,7 +12,7 @@ import Firebase
 struct Persona {
     let key: String!
     let nombre : String!
-    let direccion: String!
+    let celular: String!
     let numHijos: Int!
     let numPas: Int!
     let entrada: String!
@@ -33,11 +33,11 @@ struct Persona {
             nombre = ""
         }
         
-        if let dir = snapshotValue["address"] as? String{
-            direccion = dir
+        if let cel = snapshotValue["celular"] as? String{
+            celular = cel
         }
         else{
-            direccion = ""
+            celular = ""
         }
         
         if let numH = snapshotValue["numChildren"] as? String{

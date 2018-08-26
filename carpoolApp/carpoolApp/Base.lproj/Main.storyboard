@@ -169,7 +169,6 @@
                                                 <state key="normal" title="Done"/>
                                                 <connections>
                                                     <action selector="uploadData:" destination="ckH-IZ-ZMF" eventType="touchUpInside" id="Bav-Zd-SOr"/>
-                                                    <segue destination="4ac-FF-L6r" kind="show" identifier="toMapVC" id="FaI-yf-eKh"/>
                                                 </connections>
                                             </button>
                                         </subviews>
@@ -200,13 +199,14 @@
                     <navigationItem key="navigationItem" title="Settings" id="xLu-uO-YmZ"/>
                     <size key="freeformSize" width="375" height="1000"/>
                     <connections>
-                        <outlet property="dirTF" destination="B6R-XU-dJ9" id="Ibp-vQ-bDP"/>
+                        <outlet property="celTF" destination="B6R-XU-dJ9" id="Ibp-vQ-bDP"/>
                         <outlet property="entradaPIC" destination="GFX-u3-kY7" id="M4v-cb-dGz"/>
                         <outlet property="nomTF" destination="GjQ-Sd-wyk" id="1PX-57-93a"/>
                         <outlet property="numHijosTF" destination="Wrj-l8-sJP" id="oRi-1R-jcs"/>
                         <outlet property="numPasTF" destination="XXE-8f-Kxm" id="RF9-vg-TvK"/>
                         <outlet property="salidaPIC" destination="chK-vi-Ypf" id="WhB-52-HzQ"/>
                         <outlet property="scrollView" destination="tNp-3P-6bd" id="MAb-hz-6a5"/>
+                        <segue destination="4ac-FF-L6r" kind="show" identifier="toMapVC" id="A11-Fz-e86"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="EbN-Bf-XgA" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -421,6 +421,6 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="FaI-yf-eKh"/>
+        <segue reference="A11-Fz-e86"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -26,6 +26,7 @@ class MatchesTableViewController: UITableViewController, CLLocationManagerDelega
     
     // user variables
     var userCoordinates: LocationObj!
+    var loggedUser: Persona!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -93,15 +94,36 @@ class MatchesTableViewController: UITableViewController, CLLocationManagerDelega
             auxLocation = CLLocation(latitude: location.lat, longitude: location.lon)
             distanceInKiloMeters = auxCoordinates.distance(from: auxLocation) / 1000
             distanceInKiloMeters = Double(distanceInKiloMeters).roundTo(places: 3)
-            print("Distance: ", distanceInKiloMeters)
 
             // agrega las ubicaciones que estan dentro del rango
             if(distanceInKiloMeters <= acceptedRadius) {
                 matchLocations.append(location)
+                childFilter()
             }
         }
-        tableView.reloadData()
+    }
+    
+    // filters potential matches based on number of children and capacity
+    func childFilter() {
+        var auxMatchLocations = [LocationObj]()
+        var potentialPerson: Persona!
         
+        databaseRef = Database.database().reference().child("usuarios")
+        databaseRef.observe(DataEventType.value) { (snapshot) in
+            for snapshot in snapshot.children {
+                potentialPerson = Persona(snapshot: snapshot as! DataSnapshot)
+               
+                for match in self.matchLocations {
+                    if(potentialPerson.key == match.key) {
+                        if(potentialPerson.numPas >= self.loggedUser.numHijos) {
+                            auxMatchLocations.append(match)
+                        }
+                    }
+                }
+            }
+            self.matchLocations = auxMatchLocations
+            self.tableView.reloadData()
+        }
     }
 
     override func didReceiveMemoryWarning() {

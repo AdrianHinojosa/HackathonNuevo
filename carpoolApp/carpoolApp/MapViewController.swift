@@ -25,6 +25,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate {
     // firebase
     var dbReference: DatabaseReference!
     var newNombre = ""
+    var loggedUser: Persona!
     
     @IBAction func logOutBT(_ sender: Any) {
         do{
@@ -184,6 +185,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate {
         if(segue.identifier == "goToMatches") {
             let matchesTableVC = segue.destination as! MatchesTableViewController
             matchesTableVC.acceptedRadius = acceptedRadius
+            matchesTableVC.loggedUser = loggedUser
         }
     }
  

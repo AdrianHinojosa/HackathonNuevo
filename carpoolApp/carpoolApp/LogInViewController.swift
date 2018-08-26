@@ -16,6 +16,7 @@ class LogInViewController: UIViewController {
     
     // nombre es pasado al siguiente segue para que se guarde el dato en LocationObj
     var newNombre: String!
+    var loggedUser: Persona!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -46,15 +47,16 @@ class LogInViewController: UIViewController {
     }
     
 
+    // retrieves user data
     func retrieveUserName() {
         let databaseRef = Database.database().reference().child("usuarios")
         let userID = Auth.auth().currentUser?.uid
-        print("Checking user...")
+        print("Retrieving user...")
         databaseRef.child(userID!).observeSingleEvent(of: .value, with: { (snapshot) in
             
             let currentUser = Persona(snapshot: snapshot)
+            self.loggedUser = currentUser
             self.newNombre = currentUser.nombre!
-            print("Nombre Login:", self.newNombre!)
             self.performSegue(withIdentifier: "goToHome2", sender: self)
             
         }) { (error) in
@@ -70,6 +72,7 @@ class LogInViewController: UIViewController {
         if(segue.identifier == "goToHome2") {
             let mapVC = segue.destination as! MapViewController
             mapVC.newNombre = newNombre
+            mapVC.loggedUser = loggedUser
         }
     }
  

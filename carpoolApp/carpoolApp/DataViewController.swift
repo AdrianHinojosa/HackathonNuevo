@@ -15,7 +15,7 @@ class DataViewController: UIViewController, CLLocationManagerDelegate {
     // view text fields
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var nomTF: UITextField!
-    @IBOutlet weak var dirTF: UITextField!
+    @IBOutlet weak var celTF: UITextField!
     @IBOutlet weak var numHijosTF: UITextField!
     @IBOutlet weak var numPasTF: UITextField!
     @IBOutlet weak var entradaPIC: UIDatePicker!
@@ -23,7 +23,7 @@ class DataViewController: UIViewController, CLLocationManagerDelegate {
     
     // persona data
     var nombre : String!
-    var direccion: String!
+    var celular: String!
     var numHijos: String!
     var numPas: String!
     var entrada: String!
@@ -33,6 +33,7 @@ class DataViewController: UIViewController, CLLocationManagerDelegate {
     var locationManager = CLLocationManager()
     
     var newNombre: String!
+    var loggedUser: Persona!
     
     // esconde el teclado
   func scrollViewWillBeginDragging(scrollView: UIScrollView) {
@@ -69,7 +70,7 @@ class DataViewController: UIViewController, CLLocationManagerDelegate {
         
         if let user = Auth.auth().currentUser{
             let key = user.uid
-            let persona = ["name": nombre, "address": direccion, "numChildren": numHijos, "numPassengers": numPas, "entryHour": entrada, "outHour": salida, "coordinates": "false"]
+            let persona = ["name": nombre, "celular": celular, "numChildren": numHijos, "numPassengers": numPas, "entryHour": entrada, "outHour": salida, "coordinates": "false"]
             
             newNombre = nombre
             
@@ -77,16 +78,30 @@ class DataViewController: UIViewController, CLLocationManagerDelegate {
             dbReference.updateChildValues(childUpdates)
             
             print("upload to database complete")
-        }
-        
+            retrieveUserName()
+        }  
     }
    
-
+    // retrieves user data
+    func retrieveUserName() {
+        let databaseRef = Database.database().reference().child("usuarios")
+        let userID = Auth.auth().currentUser?.uid
+        print("Retrieving user...")
+        databaseRef.child(userID!).observeSingleEvent(of: .value, with: { (snapshot) in
+            
+            let currentUser = Persona(snapshot: snapshot)
+            self.loggedUser = currentUser
+            self.performSegue(withIdentifier: "toMapVC", sender: self)
+            
+        }) { (error) in
+            print(error.localizedDescription)
+        }
+    }
     
     func checkTF()->Bool{
-        if(nomTF.text! != "" && dirTF.text! != "" && numHijosTF.text! != "" && numPasTF.text! != ""){
+        if(nomTF.text! != "" && celTF.text! != "" && numHijosTF.text! != "" && numPasTF.text! != ""){
             nombre = nomTF.text!
-            direccion = dirTF.text!
+            celular = celTF.text!
             numHijos = numHijosTF.text!
             numPas = numPasTF.text!
             let date = entradaPIC.date
@@ -102,10 +117,8 @@ class DataViewController: UIViewController, CLLocationManagerDelegate {
             entrada = stringDateS
             print(stringDateS)
             salida = stringDateS
-            
             return true
         }
-        
         
         return false
     }
@@ -120,6 +133,7 @@ class DataViewController: UIViewController, CLLocationManagerDelegate {
         if(segue.identifier == "toMapVC") {
             let mapVC = segue.destination as! MapViewController
             mapVC.newNombre = newNombre
+            mapVC.loggedUser = loggedUser
         }
     }
  
