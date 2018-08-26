@@ -44,6 +44,7 @@ class DataViewController: UIViewController, CLLocationManagerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        self.navigationItem.setHidesBackButton(true, animated:true);
         scrollView.keyboardDismissMode = .onDrag
         // pide acceso a la ubicacion del usuario
         locationManager.requestWhenInUseAuthorization()
@@ -58,6 +59,7 @@ class DataViewController: UIViewController, CLLocationManagerDelegate {
         if (checkTF()){
             print("text fields ok")
             updateDatabase()
+           self.performSegue(withIdentifier: "toMapVC", sender: self)
         }
         else{
             print("missing info in text fields")
