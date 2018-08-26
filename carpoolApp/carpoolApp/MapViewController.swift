@@ -121,7 +121,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate {
     @IBOutlet weak var UnKmColor: UIButton!
     
     @IBAction func UnKm(_ sender: Any) {
-        UnKmColor.backgroundColor = UIColor.blue
+        UnKmColor.backgroundColor = UIColor(red: 219/255, green: 191/255, blue: 112/255, alpha: 1)
         TresKmColor.backgroundColor = nil
         CincoKmColor.backgroundColor = nil
         let coordinates = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
@@ -135,7 +135,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate {
     @IBOutlet weak var TresKmColor: UIButton!
     
     @IBAction func TresKm(_ sender: Any) {
-        TresKmColor.backgroundColor = UIColor.blue
+        TresKmColor.backgroundColor = UIColor(red: 219/255, green: 191/255, blue: 112/255, alpha: 1)
         UnKmColor.backgroundColor = nil
         CincoKmColor.backgroundColor = nil
         let coordinates = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
@@ -149,7 +149,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate {
     @IBOutlet weak var CincoKmColor: UIButton!
     
     @IBAction func CincoKm(_ sender: Any) {
-        CincoKmColor.backgroundColor = UIColor.blue
+        CincoKmColor.backgroundColor = UIColor(red: 219/255, green: 191/255, blue: 112/255, alpha: 1)
         UnKmColor.backgroundColor = nil
         TresKmColor.backgroundColor = nil
         let coordinates = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
